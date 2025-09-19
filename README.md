@@ -43,7 +43,7 @@ Replace screenshot.png with your actual screenshot file if needed.
 
 Clone or download this repository:
 
-git clone https://github.com/yourusername/advanced-password-generator.git
+git clone https://github.com/Narayana-code-7/Password-Generator
 
 
 Open the index.html file in your browser.
