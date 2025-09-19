@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Password Generator</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f2f5;
+    margin: 0;
+}
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+h2 {
+    margin-bottom: 20px;
+}
+input[type=number] {
+    width: 60px;
+    padding: 6px;
+}
+label {
+    display: block;
+    margin: 8px 0;
+    text-align: left;
+}
+button {
+    padding: 10px 20px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+button:hover { background: #0056b3; }
+.password-box {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    word-break: break-all;
+}
+.copy-btn {
+    margin-left: 10px;
+    padding: 6px 10px;
+    font-size: 0.9em;
+    background: #28a745;
+    border-radius: 6px;
+}
+.copy-btn.copied { background: #218838; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Advanced Password Generator</h2>
+
+    <label>Password Length: <input type="number" id="length" value="12" min="4" max="50"></label>
+
+    <label><input type="checkbox" id="uppercase" checked> Uppercase (A-Z)</label>
+    <label><input type="checkbox" id="lowercase" checked> Lowercase (a-z)</label>
+    <label><input type="checkbox" id="numbers" checked> Numbers (0-9)</label>
+    <label><input type="checkbox" id="symbols" checked> Symbols (!@#$%^&*)</label>
+
+    <button onclick="generatePassword()">Generate Password</button>
+
+    <div class="password-box">
+        <span id="password">Your password will appear here</span>
+        <button class="copy-btn" onclick="copyPassword()">Copy</button>
+    </div>
+
+    <label><input type="checkbox" id="reveal" onchange="toggleReveal()"> Reveal Password</label>
+</div>
+
+<script>
+function generatePassword() {
+    const length = parseInt(document.getElementById('length').value);
+    const uppercase = document.getElementById('uppercase').checked;
+    const lowercase = document.getElementById('lowercase').checked;
+    const numbers = document.getElementById('numbers').checked;
+    const symbols = document.getElementById('symbols').checked;
+
+    let charPool = '';
+    if (uppercase) charPool += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (lowercase) charPool += 'abcdefghijklmnopqrstuvwxyz';
+    if (numbers) charPool += '0123456789';
+    if (symbols) charPool += '!@#$%^&*()-_=+';
+
+    if (!charPool) {
+        alert('Select at least one character type!');
+        return;
+    }
+
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charPool.length);
+        password += charPool[randomIndex];
+    }
+
+    document.getElementById('password').textContent = password;
+}
+
+function copyPassword() {
+    const password = document.getElementById('password').textContent;
+    navigator.clipboard.writeText(password).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.textContent = 'Copy';
+            btn.classList.remove('copied');
+        }, 1500);
+    });
+}
+
+function toggleReveal() {
+    const pwd = document.getElementById('password');
+    const reveal = document.getElementById('reveal').checked;
+    pwd.style.userSelect = reveal ? 'text' : 'none';
+}
+</script>
+</body>
+</html>
